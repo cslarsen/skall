@@ -26,7 +26,8 @@ static int last_exit_status;
 static const char* BUILTINS[] = {
   "help",
   "cd",
-  "$?"
+  "$?",
+  "exit"
 };
 
 static char* triml(char* s)
@@ -112,6 +113,8 @@ void exec_builtin(const char* cmd, char* const* argv)
     fprintf(stderr, "\n");
   } else if ( !strcmp("$?", cmd) ) {
     printf("%d\n", last_exit_status);
+  } else if ( !strcmp("exit", cmd) ) {
+    exit(0);
   }
 }
 
