@@ -15,6 +15,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <signal.h>
 #include "trim.h"
 
 #define PROMPT "skall> "
@@ -30,6 +31,11 @@ static const char* BUILTINS[] = {
   "$?",
   "exit"
 };
+
+static void catch_signal(int s)
+{
+  fprintf(stderr, "\n%s\n", strsignal(s));
+}
 
 static void parse_args(char *s)
 {
@@ -94,6 +100,12 @@ void exec_builtin(const char* cmd, char* const* argv)
 
 int main(int argc, char** argv)
 {
+  /*
+   * Install some signal handlers
+   */
+  signal(SIGINT, catch_signal);
+  signal(SIGTSTP, catch_signal);
+
   for (;;) {
     printf("%s", PROMPT);
     parse_args(readcmd(stdin));
