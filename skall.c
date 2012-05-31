@@ -28,7 +28,7 @@ static int last_exit_status;
 static const char* BUILTINS[] = {
   "$?",
   "cd",
-  "exit"
+  "exit",
   "help",
 };
 
@@ -110,7 +110,6 @@ int main(int argc, char** argv)
 
     if ( !*args[0] )
       continue;
-
 
     if ( isbuiltin(args[0]) ) {
       exec_builtin(args[0], args);
