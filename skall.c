@@ -18,9 +18,10 @@
 #include <signal.h>
 #include "trim.h"
 
-#define PROMPT "skall> "
 #define MAXLINE 1024
 #define MAXARGS 256
+#define MAXPROMPT 256
+#define MAXPATH 1024
 
 static char* args[MAXARGS];
 static int last_exit_status;
@@ -35,6 +36,15 @@ static const char* BUILTINS[] = {
 static void catch_signal(int s)
 {
   psignal(s, "\nskall");
+}
+
+static char* getprompt()
+{
+  static char s[MAXPROMPT];
+  char cwd[MAXPATH];
+  getcwd(cwd, sizeof(cwd));
+  sprintf(s, "skall %s$ ", cwd);
+  return s;
 }
 
 static void parse_args(char *s)
@@ -107,7 +117,7 @@ int main(int argc, char** argv)
   signal(SIGTSTP, catch_signal);
 
   for (;;) {
-    printf("%s", PROMPT);
+    printf("%s", getprompt());
     parse_args(readcmd(stdin));
 
     if ( feof(stdin) )
