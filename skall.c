@@ -60,7 +60,7 @@ static void parse_args(char *s)
   while ( *s ) {
     if ( isspace(*s) ) {
       if ( n == MAXARGS-2 ) {
-        fprintf(stderr, "warnign: too many args\n");
+        fprintf(stderr, "warning: too many args\n");
         break;
       }
 
