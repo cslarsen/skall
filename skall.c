@@ -24,10 +24,10 @@
 static int last_exit_status;
 
 static const char* BUILTINS[] = {
-  "help",
-  "cd",
   "$?",
+  "cd",
   "exit"
+  "help",
 };
 
 static void catch_signal(int s)
@@ -43,7 +43,7 @@ char* readcmd(FILE* f)
   return trim(line);
 }
 
-int builtin_cmd(const char* s)
+int isbuiltin(const char* s)
 {
   for ( int n=0; n<sizeof(BUILTINS)/sizeof(char*); ++n )
     if ( !strcmp(BUILTINS[n], s) )
@@ -89,7 +89,7 @@ int main(int argc, char** argv)
     if ( !*args[0] )
       continue;
 
-    if ( builtin_cmd(args[0]) ) {
+    if ( isbuiltin(args[0]) ) {
       exec_builtin(args[0], args);
       continue;
     }
