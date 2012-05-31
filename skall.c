@@ -34,7 +34,7 @@ static const char* BUILTINS[] = {
 
 static void catch_signal(int s)
 {
-  fprintf(stderr, "\n%s\n", strsignal(s));
+  psignal(s, "\nskall");
 }
 
 static void parse_args(char *s)
