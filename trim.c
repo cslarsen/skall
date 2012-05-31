@@ -4,16 +4,18 @@
 
 char* triml(char* s)
 {
-  while ( isspace(*s) ) ++s;
+  if ( s ) while ( isspace(*s) ) ++s;
   return s;
 }
 
 char* trimr(char* s)
 {
-  char *p = s+strlen(s)-1;
+  if ( s ) {
+    char *p = s+strlen(s)-1;
 
-  while ( p>s && isspace(*p) )
-    *p-- = 0;
+    while ( p>s && isspace(*p) )
+      *p-- = 0;
+  }
 
   return s;
 }

@@ -20,7 +20,9 @@
 #include "trim.h"
 #include "args.h"
 #include "prompt.h"
+#include "readline.h"
 
+static const char prompt_fmt[] = "skall %s$ ";
 static int last_exit_status;
 
 static const char* BUILTINS[] = {
@@ -79,15 +81,36 @@ int main(int argc, char** argv)
   signal(SIGINT, catch_signal);
   signal(SIGTSTP, catch_signal);
 
-  for (;;) {
-    printf("%s", getprompt("skall %s$ "));
-    char **args = parse_args(readcmd(stdin));
+#ifdef USE_READLINE
+  init_readline();
+#endif
 
-    if ( feof(stdin) )
+  for (;;) {
+#ifndef USE_READLINE
+    printf("%s", getprompt(prompt_fmt));
+    char *input = readcmd(stdin);
+#else
+    char *input = trim(readline(getprompt(prompt_fmt)));
+#endif
+
+    if ( feof(stdin) || !input ) {
+      fprintf(stderr, "\n");
       break;
+    }
+
+#ifdef USE_READLINE
+    add_history(input);
+#endif
+
+    char **args = parse_args(input);
+
+#ifdef USE_READLINE
+    free(input);
+#endif
 
     if ( !*args[0] )
       continue;
+
 
     if ( isbuiltin(args[0]) ) {
       exec_builtin(args[0], args);

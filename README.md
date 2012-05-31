@@ -8,11 +8,20 @@ No; it's put in the public domain by the author.
 
 Current Features
 ----------------
-Command execution. :-)
+Not much yet, but:
+
+* Command execution :-)
+* Readline support
+* A few signals caught
 
 Missing features
 ----------------
-It should at least handle signals and support pipe redirection.  We'll see.
+A lot is currently missing, including:
+
+* Complete signaling support
+* Pipe redirection
+* Job control
+* ... and more
 
 Compiling
 ---------
