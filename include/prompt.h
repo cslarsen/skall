@@ -1,0 +1,1 @@
+char* getprompt(const char*);

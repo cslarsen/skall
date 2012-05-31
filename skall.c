@@ -19,6 +19,7 @@
 #include "skall.h"
 #include "trim.h"
 #include "args.h"
+#include "prompt.h"
 
 static int last_exit_status;
 
@@ -32,15 +33,6 @@ static const char* BUILTINS[] = {
 static void catch_signal(int s)
 {
   psignal(s, "\nskall");
-}
-
-static char* getprompt()
-{
-  static char s[MAXPROMPT];
-  char *cwd = getwd(NULL);
-  sprintf(s, "skall %s$ ", cwd);
-  free(cwd);
-  return s;
 }
 
 char* readcmd(FILE* f)
@@ -88,7 +80,7 @@ int main(int argc, char** argv)
   signal(SIGTSTP, catch_signal);
 
   for (;;) {
-    printf("%s", getprompt());
+    printf("%s", getprompt("skall %s$ "));
     char **args = parse_args(readcmd(stdin));
 
     if ( feof(stdin) )
