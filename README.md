@@ -11,17 +11,16 @@ Current Features
 Not much yet, but:
 
 * Command execution :-)
-* Readline support
-* A few signals caught
+* Readline support with history
+* Catches a few signals
 
-Missing features
-----------------
-A lot is currently missing, including:
-
+Glaringly missing features
+--------------------------
 * Complete signaling support
 * Pipe redirection
+* Globbing
 * Job control
-* ... and more
+* ... and much more
 
 Compiling
 ---------
