@@ -15,6 +15,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include "trim.h"
 
 #define PROMPT "skall> "
 #define MAXLINE 1024
@@ -29,27 +30,6 @@ static const char* BUILTINS[] = {
   "$?",
   "exit"
 };
-
-static char* triml(char* s)
-{
-  while ( isspace(*s) ) ++s;
-  return s;
-}
-
-static char* trimr(char* s)
-{
-  char *p = s+strlen(s)-1;
-
-  while ( p>s && isspace(*p) )
-    *p-- = 0;
-
-  return s;
-}
-
-static char* trim(char* s)
-{
-  return triml(trimr(s));
-}
 
 static void parse_args(char *s)
 {
@@ -74,12 +54,6 @@ static void parse_args(char *s)
 
   args[n++] = prev;
   args[n++] = NULL;
-}
-
-static void print_args()
-{
-  for ( int n=0; n<MAXARGS && args[n]; ++n )
-    fprintf(stderr, "arg[%d] = '%s'\n", n, args[n]);
 }
 
 char* readcmd(FILE* f)
