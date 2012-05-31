@@ -14,22 +14,24 @@ Missing features
 ----------------
 It should at least handle signals and support pipe redirection.  We'll see.
 
+Compiling
+---------
+    ~/devel/skall csl$ make
+    cc     skall.c   -o skall
+
 Example session
 ---------------
-    Script started on Thu May 31 02:38:18 2012
-    [?1034h~/devel/skall csl$ make
-    cc     skall.c   -o skall
-    ~/devel/skall csl$ ./skall 
+    ~ csl$ ./skall 
     skall> help
     skall is a minimal, experimental unix shell
     
     builtin commands:
-    help cd $? 
+    help cd $? exit 
     skall> ls
     Makefile	README.md	skall		skall.c
     skall> cd /
     chdir to '/'
-    skall> cd    pwd
+    skall> pwd
     /
     skall> cd private
     chdir to 'private'
@@ -45,9 +47,9 @@ Example session
     drwxr-xr-x   29 root  wheel   986 22 jul  2011 var
     skall> uname
     Darwin
-    skall> echo nice    c ribbit
+    skall> echo ribbit
     ribbit
-    skall> exit    ^D~/devel/skall csl$ exit
+    skall> exit
 
 Author
 ------
