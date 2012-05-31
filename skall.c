@@ -16,13 +16,10 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <signal.h>
+#include "skall.h"
 #include "trim.h"
+#include "args.h"
 
-#define MAXLINE 1024
-#define MAXARGS 256
-#define MAXPROMPT 256
-
-static char* args[MAXARGS];
 static int last_exit_status;
 
 static const char* BUILTINS[] = {
@@ -44,31 +41,6 @@ static char* getprompt()
   sprintf(s, "skall %s$ ", cwd);
   free(cwd);
   return s;
-}
-
-static void parse_args(char *s)
-{
-  int n=0;
-  args[MAXARGS-1] = NULL;
-  args[0] = s;
-  char *prev = s;
-
-  while ( *s ) {
-    if ( isspace(*s) ) {
-      if ( n == MAXARGS-2 ) {
-        fprintf(stderr, "warning: too many args\n");
-        break;
-      }
-
-      args[n++] = prev;
-      *s = 0;
-      prev = s = triml(s+1);
-    } else
-      ++s;
-  }
-
-  args[n++] = prev;
-  args[n++] = NULL;
 }
 
 char* readcmd(FILE* f)
@@ -117,7 +89,7 @@ int main(int argc, char** argv)
 
   for (;;) {
     printf("%s", getprompt());
-    parse_args(readcmd(stdin));
+    char **args = parse_args(readcmd(stdin));
 
     if ( feof(stdin) )
       break;
