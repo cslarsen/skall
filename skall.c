@@ -21,7 +21,6 @@
 #define MAXLINE 1024
 #define MAXARGS 256
 #define MAXPROMPT 256
-#define MAXPATH 1024
 
 static char* args[MAXARGS];
 static int last_exit_status;
@@ -41,9 +40,9 @@ static void catch_signal(int s)
 static char* getprompt()
 {
   static char s[MAXPROMPT];
-  char cwd[MAXPATH];
-  getcwd(cwd, sizeof(cwd));
+  char *cwd = getwd(NULL);
   sprintf(s, "skall %s$ ", cwd);
+  free(cwd);
   return s;
 }
 
