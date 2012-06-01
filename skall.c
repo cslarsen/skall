@@ -45,7 +45,7 @@ static void initialize(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-  initialize(argc, arv);
+  initialize(argc, argv);
 
   for (;;) {
     char *input = readprompt(stdin, NULL);
