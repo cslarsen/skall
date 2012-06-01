@@ -38,9 +38,9 @@ int main(int argc, char** argv)
   signal(SIGINT, catch_signal);
   signal(SIGTSTP, catch_signal);
 
-#ifdef USE_READLINE
+  #ifdef USE_READLINE
   init_readline();
-#endif
+  #endif
 
   for (;;) {
     char *input = readprompt(stdin, NULL);
@@ -50,9 +50,9 @@ int main(int argc, char** argv)
       break;
     }
 
-#ifdef USE_READLINE
+    #ifdef USE_READLINE
     add_history(input);
-#endif
+    #endif
 
     char **args = parse_args(input);
     free(input);
