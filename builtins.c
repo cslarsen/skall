@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "skall.h"
 #include "builtins.h"
-
-extern int last_exit_status;
 
 static const char* BUILTINS[] = {
   "$?",
