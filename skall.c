@@ -30,7 +30,7 @@ static void catch_signal(int s)
   psignal(s, "\nskall");
 }
 
-int main(int argc, char** argv)
+static void initialize(int argc, char** argv)
 {
   /*
    * Install some signal handlers
@@ -41,6 +41,11 @@ int main(int argc, char** argv)
   #ifdef USE_READLINE
   init_readline();
   #endif
+}
+
+int main(int argc, char** argv)
+{
+  initialize(argc, arv);
 
   for (;;) {
     char *input = readprompt(stdin, NULL);
