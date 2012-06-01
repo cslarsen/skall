@@ -1,9 +1,18 @@
+/*
+ * An implementation of a separate chaining hash table in C.
+ *
+ * Put in the public domain by the author, 2012-05-02
+ *
+ * Written by Christian Stigen Larsen,
+ * http://csl.sublevel3.org
+ */
+
 #include <string.h>
 #include <stdlib.h>
 #include "hashtable.h"
 #include "hash.h"
 
-#define MAX_LOAD_FACTOR 0.5f
+#define MAX_LOAD_FACTOR 0.770523f
 
 typedef struct element_t {
   struct element_t* next;
