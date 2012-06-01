@@ -23,20 +23,11 @@
 #include "readline.h"
 #include "builtins.h"
 
-static const char prompt_fmt[] = "skall %s$ ";
 int last_exit_status;
 
 static void catch_signal(int s)
 {
   psignal(s, "\nskall");
-}
-
-char* readcmd(FILE* f)
-{
-  static char line[MAXLINE];
-  line[0] = 0;
-  fgets(line, sizeof(line), stdin);
-  return trim(line);
 }
 
 int main(int argc, char** argv)
@@ -53,7 +44,7 @@ int main(int argc, char** argv)
 
   for (;;) {
 #ifndef USE_READLINE
-    printf("%s", getprompt(prompt_fmt));
+    printf("%s", getprompt(NULL));
     char *input = readcmd(stdin);
 #else
     char *input = trim(readline(getprompt(prompt_fmt)));
@@ -69,10 +60,7 @@ int main(int argc, char** argv)
 #endif
 
     char **args = parse_args(input);
-
-#ifdef USE_READLINE
     free(input);
-#endif
 
     if ( !*args[0] )
       continue;

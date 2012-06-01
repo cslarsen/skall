@@ -5,3 +5,5 @@
 void init_readline();
 
 #endif
+
+char* readcmd(FILE*);
