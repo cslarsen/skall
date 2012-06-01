@@ -72,7 +72,7 @@ int main(int argc, char** argv)
       // child process
       execvp(args[0], args);
       perror(argv[0]);
-      exit(1);
+      exit(127);
     }
   }
 
