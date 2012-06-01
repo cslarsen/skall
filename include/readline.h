@@ -6,4 +6,4 @@ void init_readline();
 
 #endif
 
-char* readcmd(FILE*);
+char* readprompt(FILE*, const char*);

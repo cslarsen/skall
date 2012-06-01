@@ -15,16 +15,17 @@ void init_readline()
   rl_readline_name = strdup("skall");
 }
 
-char* readcmd(FILE* f)
+char* readprompt(FILE* f, const char* promptfmt)
 {
-  return trim(readline(getprompt(NULL)));
+  return trim(readline(getprompt(promptfmt)));
 }
 
 #else
 
-char* readcmd(FILE* f)
+char* readprompt(FILE* f, const char* promptfmt)
 {
   char buf[MAXLINE];
+  printf("%s", getprompt(promptfmt));
   fgets(buf, sizeof(buf), stdin);
   return strdup(trim(buf));
 }

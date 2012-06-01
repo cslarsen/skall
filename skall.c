@@ -43,12 +43,7 @@ int main(int argc, char** argv)
 #endif
 
   for (;;) {
-#ifndef USE_READLINE
-    printf("%s", getprompt(NULL));
-    char *input = readcmd(stdin);
-#else
-    char *input = trim(readline(getprompt(prompt_fmt)));
-#endif
+    char *input = readprompt(stdin, NULL);
 
     if ( feof(stdin) || !input ) {
       fprintf(stderr, "\n");
