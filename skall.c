@@ -22,8 +22,7 @@
 #include "prompt.h"
 #include "readline.h"
 #include "builtins.h"
-
-int last_exit_status;
+#include "variables.h"
 
 static void catch_signal(int s)
 {
@@ -41,14 +40,25 @@ static void initialize(int argc, char** argv)
   #ifdef USE_READLINE
   init_readline();
   #endif
+
+  initvars();
+
+  /*
+   * Set up some default variables
+   */
+  setivar("?", 0); // $? -> last exit status
+  setcvar("_", strdup(argc>1? argv[1] : "")); // $_ -> argv[1] of last cmd
 }
 
 int main(int argc, char** argv)
 {
   initialize(argc, argv);
 
+  char *input = strdup(argv[0]);
+
   for (;;) {
-    char *input = readprompt(stdin, NULL);
+    free(input);
+    input = readprompt(stdin, NULL);
 
     if ( feof(stdin) || !input ) {
       fprintf(stderr, "\n");
@@ -60,7 +70,6 @@ int main(int argc, char** argv)
     #endif
 
     char **args = parse_args(input);
-    free(input);
 
     if ( !*args[0] )
       continue;
@@ -72,7 +81,13 @@ int main(int argc, char** argv)
 
     int pid;
     if ( (pid = fork()) > 0 ) {
-      wait(&last_exit_status);
+      int s;
+      wait(&s);
+
+      // update variables
+      free(getcvar("_"));
+      setcvar("_", strdup(args[1]? args[1] : ""));
+      setivar("?", s);
     } else {
       // child process
       execvp(args[0], args);

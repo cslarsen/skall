@@ -4,9 +4,11 @@
 #include <unistd.h>
 #include "skall.h"
 #include "builtins.h"
+#include "variables.h"
 
 static const char* BUILTINS[] = {
   "$?",
+  "$_",
   "cd",
   "exit",
   "help",
@@ -35,9 +37,13 @@ void exec_builtin(const char* cmd, char* const* argv)
 
     fprintf(stderr, "\n");
   } else if ( !strcmp("$?", cmd) ) {
-    printf("%d\n", last_exit_status);
+    // NOTE: It's a hack to access a variable like a builtin
+    printf("%d\n", getivar("?"));
   } else if ( !strcmp("exit", cmd) ) {
     exit(0);
+  } else if ( !strcmp("$_", cmd) ) {
+    // NOTE: It's a hack to access a variable like a builtin
+    printf("'%s'\n", getcvar("_"));
   }
 }
 
