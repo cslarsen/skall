@@ -46,8 +46,8 @@ static void initialize(int argc, char** argv)
   /*
    * Set up some default variables
    */
-  SETVAR("$", getpid());
   SETVAR("#", argc);
+  SETVAR("$", getpid());
   SETVAR("?", 0);
   SETVAR("_", strdup(argv[0]));
 }
