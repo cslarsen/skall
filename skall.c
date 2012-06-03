@@ -46,8 +46,8 @@ static void initialize(int argc, char** argv)
   /*
    * Set up some default variables
    */
-  setivar("?", 0); // $? -> last exit status
-  setcvar("_", strdup(argc>1? argv[1] : "")); // $_ -> argv[1] of last cmd
+  nsetvar("?", 0); // $? -> last exit status
+  csetvar("_", strdup(argc>1? argv[1] : "")); // $_ -> argv[1] of last cmd
 }
 
 int main(int argc, char** argv)
@@ -85,9 +85,9 @@ int main(int argc, char** argv)
       wait(&s);
 
       // update variables
-      free(getcvar("_"));
-      setcvar("_", strdup(args[1]? args[1] : ""));
-      setivar("?", s);
+      free(cgetvar("_"));
+      csetvar("_", strdup(args[1]? args[1] : ""));
+      nsetvar("?", s);
     } else {
       // child process
       execvp(args[0], args);

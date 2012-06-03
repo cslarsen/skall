@@ -38,12 +38,12 @@ void exec_builtin(const char* cmd, char* const* argv)
     fprintf(stderr, "\n");
   } else if ( !strcmp("$?", cmd) ) {
     // NOTE: It's a hack to access a variable like a builtin
-    printf("%d\n", getivar("?"));
+    printf("%d\n", ngetvar("?"));
   } else if ( !strcmp("exit", cmd) ) {
     exit(0);
   } else if ( !strcmp("$_", cmd) ) {
     // NOTE: It's a hack to access a variable like a builtin
-    printf("'%s'\n", getcvar("_"));
+    printf("'%s'\n", cgetvar("_"));
   }
 }
 
