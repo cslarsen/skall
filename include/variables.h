@@ -1,5 +1,9 @@
 #include <stddef.h>
 
+#define SETVAR(name, value) setvar(name, (void*)value)
+
+void setvar(const char* key, void* value);
+
 char* cgetvar(const char* key);
 void csetvar(const char* key, const char* value);
 

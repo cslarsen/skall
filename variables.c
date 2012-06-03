@@ -16,22 +16,27 @@ void initvars()
   vars = ht_new(127);
 }
 
-void csetvar(const char* key, const char* value)
+void setvar(const char* k, void* v)
 {
-  ht_set(vars, key, (void*) value);
+  ht_set(vars, k, v);
 }
 
-char* cgetvar(const char* key)
+void csetvar(const char* k, const char* v)
 {
-  return (char*) ht_get(vars, key);
+  ht_set(vars, k, (void*) v);
 }
 
-void nsetvar(const char* key, int value)
+char* cgetvar(const char* k)
 {
-  ht_set(vars, key, (void*) value);
+  return (char*) ht_get(vars, k);
 }
 
-int ngetvar(const char* key)
+void nsetvar(const char* k, int v)
 {
-  return (int) ht_get(vars, key);
+  ht_set(vars, k, (void*) v);
+}
+
+int ngetvar(const char* k)
+{
+  return (int) ht_get(vars, k);
 }

@@ -46,8 +46,10 @@ static void initialize(int argc, char** argv)
   /*
    * Set up some default variables
    */
-  nsetvar("?", 0); // $? -> last exit status
-  csetvar("_", strdup(argc>1? argv[1] : "")); // $_ -> argv[1] of last cmd
+  SETVAR("$", getpid());
+  SETVAR("#", argc);
+  SETVAR("?", 0);
+  SETVAR("_", strdup(argv[0]));
 }
 
 int main(int argc, char** argv)
@@ -69,9 +71,10 @@ int main(int argc, char** argv)
     add_history(input);
     #endif
 
-    char **args = parse_args(input);
+    int argc = 0;
+    char **args = parse_args(input, &argc);
 
-    if ( !*args[0] )
+    if ( !argc || !*args[0] )
       continue;
 
     if ( isbuiltin(args[0]) ) {
@@ -86,8 +89,8 @@ int main(int argc, char** argv)
 
       // update variables
       free(cgetvar("_"));
-      csetvar("_", strdup(args[1]? args[1] : ""));
-      nsetvar("?", s);
+      SETVAR("_", strdup(args[argc-1]));
+      SETVAR("?", s);
     } else {
       // child process
       execvp(args[0], args);
