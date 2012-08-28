@@ -46,7 +46,7 @@ static void ht_check_load(hashtable_t* ht)
   if ( lf >= MAX_LOAD_FACTOR ) {
     hashtable_t *htnew = ht_new(2*(1 + ht->capacity) - 1);
 
-    for ( int n=0; n < ht->capacity; ++n ) {
+    for ( size_t n=0; n < ht->capacity; ++n ) {
       element_t *p = ht->table[n];
 
       while ( p ) {
