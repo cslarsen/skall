@@ -7,4 +7,4 @@ all: $(TARGETS)
 skall: hash.o hashtable.o variables.o builtins.o readline.o args.o trim.o prompt.o
 
 clean:
-	rm -f $(TARGETS)
+	rm -rf $(TARGETS) *.dSYM
