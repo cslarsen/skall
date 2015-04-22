@@ -13,29 +13,30 @@ Not much yet, but:
 * Command execution :-)
 * Readline support with history and simple globbing
 * Catches a few signals
+* Expands a few built-in variables
 
 Glaringly missing features
 --------------------------
+* No semicolon separated commands
 * Complete signaling support
 * Pipe plumbing
 * Globbing / tab-completion
 * Job control
-* Variable expansion
+* User setable variables
 * ... and much more
 
 Compiling
 ---------
-    ~/devel/skall csl$ make
-    cc     skall.c   -o skall
+    $ make -j && ./skall
 
 Example session
 ---------------
     ~ csl$ ./skall 
     skall> help
     skall is a minimal, experimental unix shell
-    
+
     builtin commands:
-    help cd $? exit 
+    help cd $? exit
     skall> ls
     Makefile	README.md	skall		skall.c
     skall> cd /
@@ -62,4 +63,4 @@ Example session
 
 Author
 ------
-Christian Stigen Larsen, http://csl.sublevel3.org
+Christian Stigen Larsen, http://csl.name
