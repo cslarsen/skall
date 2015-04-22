@@ -23,7 +23,7 @@ AC_TYPE_UINT32_T
 # Checks for library functions.
 AC_FUNC_FORK
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([getcwd strdup])
+AC_CHECK_FUNCS([getcwd strdup strndup])
 
 AC_CONFIG_FILES([
   Makefile

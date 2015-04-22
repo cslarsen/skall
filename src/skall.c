@@ -88,8 +88,7 @@ size_t setvars(char** args)
     if ( eq != NULL ) {
       int len = eq - *p;
       char *value = eq+1;
-      char* name = malloc(len+1);
-      strncpy(name, *p, len);
+      char* name = strndup(*p, len);
       csetvar(name, value);
       free(name);
       ++offset;
