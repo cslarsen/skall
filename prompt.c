@@ -10,8 +10,8 @@ const char* prompt_fmt = "skall %s$ ";
 char* getprompt(const char* fmt)
 {
   static char s[MAXPROMPT];
-  char *cwd = getwd(NULL);
+  static char buf[MAXPROMPT];
+  char *cwd = getcwd(buf, sizeof(buf));
   sprintf(s, fmt? fmt : prompt_fmt, cwd);
-  free(cwd);
   return s;
 }
