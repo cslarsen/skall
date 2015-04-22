@@ -40,7 +40,7 @@ void nsetvar(const char* k, int v)
   // We're lazy; convert to string
   char s[32];
   sprintf(s, "%d", v);
-  ht_set(vars, k, make_buffer(&s, 1+strlen(s)));
+  ht_set(vars, k, make_buffer(s, 1+strlen(s)));
 }
 
 int ngetvar(const char* k)

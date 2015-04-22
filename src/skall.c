@@ -75,6 +75,31 @@ void expand_vars(char** args)
   }
 }
 
+/*
+ * Look for "FOO=bar" from the left and set variables and clear arg. Stop when
+ * we don't find any.
+ */
+size_t setvars(char** args)
+{
+  size_t offset = 0;
+  for ( char **p=args; *p; ++p ) {
+    char *eq = strchr(*p, '=');
+    // TODO: Look for "export VAR=VAL" and setenv(name, value)
+    if ( eq != NULL ) {
+      int len = eq - *p;
+      char *value = eq+1;
+      char* name = malloc(len+1);
+      strncpy(name, *p, len);
+      csetvar(name, value);
+      free(name);
+      ++offset;
+    } else
+      break;
+  }
+
+  return offset;
+}
+
 int main(int argc, char** argv)
 {
   initialize(argc, argv);
@@ -106,16 +131,17 @@ int main(int argc, char** argv)
     }
 
     expand_vars(args);
+    size_t offset = setvars(args);
 
     int pid;
     if ( (pid = fork()) > 0 ) {
-      int exit_code;
+      int exit_code=0;
       wait(&exit_code);
-      csetvar("_", args[argc-1]);
+      csetvar("_", args[(argc-offset)-1]);
       nsetvar("?", exit_code);
-    } else {
+    } else if ( args[offset] != NULL ) {
       // child process
-      execvp(args[0], args);
+      execvp(args[offset], args[offset]!=NULL? args+offset : NULL);
       perror(argv[0]);
       exit(127);
     }

@@ -13,18 +13,19 @@ Not much yet, but:
 * Command execution :-)
 * Readline support with history and simple globbing
 * Catches a few signals
-* Expands a few built-in variables and environment variables
+* Get and set shell variables
+* Get environment variables
 
 Glaringly missing features
 --------------------------
 
-* No semicolon separated commands
+* Separating commands with semicolon
 * Complete signaling support
-* Pipe plumbing
-* Globbing / tab-completion
+* Process pipe plumbing
+* Globbing
+* tab-completion
 * Job control
-* Cannot set user variables
-* Cannot export variables to environment
+* Exporting shell variables to environment
 * ... and much more
 
 Building from source
