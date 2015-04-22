@@ -59,16 +59,18 @@ static void initialize(int argc, char** argv)
 void expand_vars(char** args)
 {
   for ( char **p = args; *p; ++p ) {
-    if ( *p[0] == '$' ) {
-      char *name = (*p)+1;
-      struct buffer *b = getvar(name);
-      if ( b == NULL )
-        *p = "";
-      else {
-        // We don't store type info, but we know that $? is an integer while $_
-        // is a string, so for now, just resolve type on that.
-        *p = b->ptr;
-      }
+    if ( **p != '$' )
+      continue;
+
+    char *name = (*p)+1;
+    struct buffer *b = getvar(name);
+
+    if ( b == NULL ) {
+      // Try environment if it doesn't exist in the hash table
+      char *env = getenv(name);
+      *p = env!=NULL? env : "";
+    } else {
+      *p = b->ptr;
     }
   }
 }

@@ -13,7 +13,7 @@ Not much yet, but:
 * Command execution :-)
 * Readline support with history and simple globbing
 * Catches a few signals
-* Expands a few built-in variables
+* Expands a few built-in variables and environment variables
 
 Glaringly missing features
 --------------------------
@@ -23,7 +23,8 @@ Glaringly missing features
 * Pipe plumbing
 * Globbing / tab-completion
 * Job control
-* User setable variables
+* Cannot set user variables
+* Cannot export variables to environment
 * ... and much more
 
 Building from source
