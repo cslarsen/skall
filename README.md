@@ -20,12 +20,13 @@ Glaringly missing features
 --------------------------
 
 * Separating commands with semicolon
-* Complete signaling support
 * Process pipe plumbing
+* Complete signaling support
 * Globbing
 * tab-completion
 * Job control
 * Exporting shell variables to environment
+* String quoting
 * ... and much more
 
 Building from source
