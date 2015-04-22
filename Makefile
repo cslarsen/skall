@@ -1,10 +1,22 @@
-TARGETS = hash.o hashtable.o variables.o builtins.o readline.o prompt.o args.o trim.o skall
+OBJECTS := args.o \
+					 buffer.o \
+					 builtins.o \
+					 hash.o \
+					 hashtable.o \
+					 prompt.o \
+					 readline.o \
+					 skall.o \
+					 trim.o \
+					 variables.o
+
+TARGETS := $(OBJECTS) skall
+
 CFLAGS = --std=c99 -Wall -Iinclude -DUSE_READLINE -g
 LDFLAGS = -lreadline
 
 all: $(TARGETS)
 
-skall: hash.o hashtable.o variables.o builtins.o readline.o args.o trim.o prompt.o
+skall: $(OBJECTS)
 
 clean:
 	rm -rf $(TARGETS) *.dSYM

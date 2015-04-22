@@ -1,41 +1,44 @@
 /*
  * An implementation of a separate chaining hash table in C.
  *
- * Put in the public domain by the author, 2012-05-02
+ * Put in the public domain by the author, 2012-05-02, 2015
  *
  * Written by Christian Stigen Larsen,
- * http://csl.sublevel3.org
+ * http://csl.name
  */
 
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "hashtable.h"
 #include "hash.h"
+#include "buffer.h"
 
 #define MAX_LOAD_FACTOR 0.770523f
 
-typedef struct element_t {
-  struct element_t* next;
-              char* key;
-        const void* value;
-} element_t;
+struct element {
+  struct element* next;
+  char* key;
+  struct buffer* value;
+};
 
-static element_t* el_new(const char* key, const void* value)
+static struct element* el_new(const char* key, struct buffer* value)
 {
-  element_t *r = (element_t*) malloc(sizeof(element_t));
-  r->key   = strdup(key);
+  struct element *r = (struct element*)malloc(sizeof(struct element));
+  r->key = strdup(key);
   r->value = value;
-  r->next  = NULL;
+  r->next = NULL;
   return r;
 }
 
-static void el_free(element_t* p)
+static void el_free(struct element* p)
 {
   free(p->key);
+  buffer_free(p->value);
   free(p);
 }
 
-static void ht_check_load(hashtable_t* ht)
+static void ht_check_load(struct hashtable* ht)
 {
   float lf = (float) ht->elements / ht->capacity;
 
@@ -44,10 +47,10 @@ static void ht_check_load(hashtable_t* ht)
    * elements over.
    */
   if ( lf >= MAX_LOAD_FACTOR ) {
-    hashtable_t *htnew = ht_new(2*(1 + ht->capacity) - 1);
+    struct hashtable* htnew = ht_new(2*(1 + ht->capacity) - 1);
 
     for ( size_t n=0; n < ht->capacity; ++n ) {
-      element_t *p = ht->table[n];
+      struct element* p = ht->table[n];
 
       while ( p ) {
         ht_set(htnew, p->key, p->value);
@@ -60,27 +63,27 @@ static void ht_check_load(hashtable_t* ht)
   }
 }
 
-hashtable_t* ht_new(size_t initial_size)
+struct hashtable* ht_new(size_t initial_size)
 {
   if ( initial_size == 0 )
     initial_size = 1;
 
-  hashtable_t *r = (hashtable_t*) malloc(sizeof(hashtable_t));
-  r->table = (element_t**) malloc(initial_size*sizeof(element_t*));
+  struct hashtable *r = (struct hashtable*) malloc(sizeof(struct hashtable));
+  r->table = (struct element**) malloc(initial_size*sizeof(struct element*));
   r->elements = 0;
   r->capacity = initial_size;
   r->hash = hash; // use default hash function
   return r;
 }
 
-void ht_free(hashtable_t* ht)
+void ht_free(struct hashtable* ht)
 {
   for ( size_t n=0; n<ht->capacity; ++n ) {
     if ( ht->table[n] ) {
-      element_t *p = ht->table[n];
+      struct element *p = ht->table[n];
 
       while ( p ) {
-        element_t *n = p->next;
+        struct element *n = p->next;
         el_free(p);
         p = n;
       }
@@ -88,10 +91,10 @@ void ht_free(hashtable_t* ht)
   }
 }
 
-void ht_set(hashtable_t* ht, const char* key, const void* value)
+void ht_set(struct hashtable* ht, const char* key, struct buffer* value)
 {
   uint32_t k = ht->hash(key) % ht->capacity;
-  element_t *p = ht->table[k];
+  struct element *p = ht->table[k];
 
   /*
    * Key not in table?  Just add it.
@@ -133,10 +136,10 @@ void ht_set(hashtable_t* ht, const char* key, const void* value)
   ht_check_load(ht);
 }
 
-const void* ht_get(hashtable_t* ht, const char* key)
+struct buffer* ht_get(struct hashtable* ht, const char* key)
 {
   uint32_t k = ht->hash(key) % ht->capacity;
-  element_t *p = ht->table[k];
+  struct element *p = ht->table[k];
 
   while ( p ) {
     if ( !strcmp(p->key, key) )

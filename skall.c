@@ -46,10 +46,10 @@ static void initialize(int argc, char** argv)
   /*
    * Set up some default variables
    */
-  SETVAR("#", argc);
-  SETVAR("$", getpid());
-  SETVAR("?", 0);
-  SETVAR("_", strdup(argv[0]));
+  nsetvar("#", argc);
+  nsetvar("$", getpid());
+  nsetvar("?", 0);
+  csetvar("_", argv[0]);
 }
 
 int main(int argc, char** argv)
@@ -88,9 +88,9 @@ int main(int argc, char** argv)
       wait(&s);
 
       // update variables
-      free(cgetvar("_"));
-      SETVAR("_", strdup(args[argc-1]));
-      SETVAR("?", s);
+      buffer_free(getvar("_"));
+      csetvar("_", args[argc-1]);
+      nsetvar("?", s);
     } else {
       // child process
       execvp(args[0], args);
