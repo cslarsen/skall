@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT([skall], [0.1])
-AC_CONFIG_SRCDIR([src])
+AC_CONFIG_SRCDIR([src/skall.c])
 AC_CONFIG_HEADERS([include/config.h])
 AM_INIT_AUTOMAKE
 
