@@ -1,4 +1,6 @@
-#ifdef USE_READLINE
+#include "config.h"
+
+#ifdef HAVE_LIBREADLINE
 # include <readline/readline.h>
 # include <readline/history.h>
 

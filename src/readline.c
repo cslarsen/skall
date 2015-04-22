@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "skall.h"
 #include "prompt.h"
 #include "trim.h"
+#include "readline.h"
 
-#ifdef USE_READLINE
+#ifdef HAVE_LIBREADLINE
 # include <readline/readline.h>
 # include <readline/history.h>
 

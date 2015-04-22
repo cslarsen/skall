@@ -40,7 +40,7 @@ static void initialize(int argc, char** argv)
   signal(SIGINT, catch_signal);
   signal(SIGTSTP, catch_signal);
 
-  #ifdef USE_READLINE
+  #ifdef HAVE_LIBREADLINE
   init_readline();
   #endif
 
@@ -88,7 +88,7 @@ int main(int argc, char** argv)
       break;
     }
 
-#ifdef USE_READLINE
+#ifdef HAVE_LIBREADLINE
     add_history(input);
 #endif
 
