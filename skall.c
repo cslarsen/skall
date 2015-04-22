@@ -8,6 +8,8 @@
  *
  */
 
+#include "config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -16,6 +18,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <signal.h>
+
 #include "skall.h"
 #include "trim.h"
 #include "args.h"

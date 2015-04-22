@@ -1,0 +1,5 @@
+./configure
+make -j
+./skall
+
+and then make install
