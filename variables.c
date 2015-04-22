@@ -18,11 +18,13 @@ void initvars()
 
 void setvar(const char* k, struct buffer* v)
 {
+  buffer_free(ht_get(vars, k));
   ht_set(vars, k, v);
 }
 
 void csetvar(const char* k, const char* v)
 {
+  buffer_free(ht_get(vars, k));
   ht_set(vars, k, make_buffer(v, 1+strlen(v)));
 }
 
@@ -33,16 +35,17 @@ char* cgetvar(const char* k)
 
 void nsetvar(const char* k, int v)
 {
-  ht_set(vars, k, make_buffer(&v, sizeof(v)));
+  buffer_free(ht_get(vars, k));
+
+  // We're lazy; convert to string
+  char s[32];
+  sprintf(s, "%d", v);
+  ht_set(vars, k, make_buffer(&s, 1+strlen(s)));
 }
 
 int ngetvar(const char* k)
 {
-  struct buffer* b = ht_get(vars, k);
-
-  int v;
-  memcpy(&v, b->ptr, sizeof(v));
-  return v;
+  return atoi(ht_get(vars, k)->ptr);
 }
 
 void* getvar(const char* k)

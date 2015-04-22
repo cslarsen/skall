@@ -52,6 +52,24 @@ static void initialize(int argc, char** argv)
   csetvar("_", argv[0]);
 }
 
+// NOTE: We only use strings currently.
+void expand_vars(char** args)
+{
+  for ( char **p = args; *p; ++p ) {
+    if ( *p[0] == '$' ) {
+      char *name = (*p)+1;
+      struct buffer *b = getvar(name);
+      if ( b == NULL )
+        *p = "";
+      else {
+        // We don't store type info, but we know that $? is an integer while $_
+        // is a string, so for now, just resolve type on that.
+        *p = b->ptr;
+      }
+    }
+  }
+}
+
 int main(int argc, char** argv)
 {
   initialize(argc, argv);
@@ -67,9 +85,9 @@ int main(int argc, char** argv)
       break;
     }
 
-    #ifdef USE_READLINE
+#ifdef USE_READLINE
     add_history(input);
-    #endif
+#endif
 
     int argc = 0;
     char **args = parse_args(input, &argc);
@@ -82,15 +100,14 @@ int main(int argc, char** argv)
       continue;
     }
 
+    expand_vars(args);
+
     int pid;
     if ( (pid = fork()) > 0 ) {
-      int s;
-      wait(&s);
-
-      // update variables
-      buffer_free(getvar("_"));
+      int exit_code;
+      wait(&exit_code);
       csetvar("_", args[argc-1]);
-      nsetvar("?", s);
+      nsetvar("?", exit_code);
     } else {
       // child process
       execvp(args[0], args);
