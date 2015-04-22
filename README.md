@@ -17,6 +17,7 @@ Not much yet, but:
 
 Glaringly missing features
 --------------------------
+
 * No semicolon separated commands
 * Complete signaling support
 * Pipe plumbing
@@ -25,13 +26,24 @@ Glaringly missing features
 * User setable variables
 * ... and much more
 
-Compiling
----------
-    $ make -j && ./skall
+Building from source
+--------------------
+
+You need autotools, sorun
+
+    $ ./autogen.sh
+    $ ./configure
+    $ make -j
+    $ src/skall
+
+If you don't have autotools, you may be able to do
+
+    $ gcc -o skall -Iinclude src/*.c
 
 Example session
 ---------------
-    ~ csl$ ./skall 
+
+    $ ./skall
     skall> help
     skall is a minimal, experimental unix shell
 
