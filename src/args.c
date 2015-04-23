@@ -21,9 +21,15 @@ char** parse_args(char *s, int* p)
   int backslash = 0;
 
   while ( *s ) {
-    if ( !backslash && *s == '"' ) {
-      quoting = !quoting;
-      strcpy(s, s+1);
+    if ( !backslash && (*s == '"' || *s == '\'') ) {
+      if ( *s == quoting ) {
+        quoting = !quoting? *s : 0;
+        strcpy(s, s+1);
+      } else if ( !quoting ) {
+        quoting = *s;
+        strcpy(s, s+1);
+      } else
+        ++s;
       continue;
     }
 
