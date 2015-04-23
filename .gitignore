@@ -4,10 +4,12 @@ Makefile
 Makefile.in
 aclocal.m4
 autom4te.cache/
+autoscan.log
 compile
 config.log
 config.status
 configure
+configure.scan
 depcomp
 include/config.h
 include/config.h.in
