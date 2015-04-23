@@ -141,7 +141,7 @@ int main(int argc, char** argv)
     } else if ( args[offset] != NULL ) {
       // child process
       execvp(args[offset], args[offset]!=NULL? args+offset : NULL);
-      perror(argv[0]);
+      perror("skall");
       exit(127);
     }
   }
