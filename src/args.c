@@ -9,7 +9,7 @@
 static char* args[MAXARGS];
 
 /*
- * TODO: Have parse_args understand quoting
+ * TODO: Have parse_args understand " and ' quoting.
  */
 char** parse_args(char *s, int* p)
 {
@@ -17,9 +17,47 @@ char** parse_args(char *s, int* p)
   args[MAXARGS-1] = NULL;
   args[0] = s;
   char *prev = triml(s);
+  int quoting = 0;
+  int backslash = 0;
 
   while ( *s ) {
-    if ( isspace(*s) ) {
+    if ( !backslash && *s == '"' ) {
+      quoting = !quoting;
+      strcpy(s, s+1);
+      continue;
+    }
+
+    if ( quoting && *s == '\\' ) {
+      backslash = 1;
+      strcpy(s, s+1);
+      continue;
+    }
+
+    if ( quoting && backslash ) {
+      switch ( *s ) {
+        case '"': *s = '"'; break;
+        case '\'': *s = '\''; break;
+        case 'a': *s = '\a'; break;
+        case 'b': *s = '\b'; break;
+        case 'f': *s = '\f'; break;
+        case 'n': *s = '\n'; break;
+        case 'r': *s = '\r'; break;
+        case 't': *s = '\t'; break;
+        case 'v': *s = '\v'; break;
+        case '\\': *s = '\\'; break;
+        default: {
+          // handle \num, \0num, \xnum, \bnum, and do in user overridable
+          // module
+          fprintf(stderr, "error: unknown escape sequence '%c'\n", *s);
+          return NULL;
+        }
+      }
+      backslash = 0;
+      ++s;
+      continue;
+    }
+
+    if ( !quoting && isspace(*s) ) {
       if ( n == MAXARGS-2 ) {
         fprintf(stderr, "warning: too many args\n");
         break;

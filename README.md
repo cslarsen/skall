@@ -15,6 +15,9 @@ Not much yet, but:
 * Catches a few signals
 * Get and set shell variables
 * Get and set environment variables
+* Double-quoted strings (but not single-quoted, yet) with some
+  escape sequences
+* Tab-completion for files (via readline)
 
 Glaringly missing features
 --------------------------
@@ -23,9 +26,9 @@ Glaringly missing features
 * Process pipe plumbing
 * Complete signaling support
 * Globbing
-* tab-completion
 * Job control
-* String quoting
+* Single-quoted strings
+* More escape sequences
 * ... and much more
 
 Building from source
