@@ -81,19 +81,38 @@ void expand_vars(char** args)
  */
 size_t setvars(char** args)
 {
+  int export = 0;
   size_t offset = 0;
-  for ( char **p=args; *p; ++p ) {
-    char *eq = strchr(*p, '=');
-    // TODO: Look for "export VAR=VAL" and setenv(name, value)
-    if ( eq != NULL ) {
-      int len = eq - *p;
-      char *value = eq+1;
-      char* name = strndup(*p, len);
+  char *eq;
+
+  for ( char **p=args; *p; ++p, ++offset ) {
+    if ( !strcmp(*p, "export") ) {
+      export = 1;
+      continue;
+    }
+
+    // VAR=VALUE
+    if ( (eq = strchr(*p, '=')) != NULL ) {
+      char *value = eq + 1;
+      char* name = strndup(*p, eq - *p);
       csetvar(name, value);
+
+      if ( export )
+        setenv(name, value, 1);
+
       free(name);
-      ++offset;
-    } else
+    } else if ( export ) {
+      // "export A"
+      // TODO: Implement
+      struct buffer *b = getvar(*p);
+      if ( b == NULL ) {
+        printf("Error: Unknown variable %s\n", *p);
+        break;
+      } else
+        setenv(*p, b->ptr, 1);
+    } else {
       break;
+    }
   }
 
   return offset;
@@ -131,6 +150,9 @@ int main(int argc, char** argv)
 
     expand_vars(args);
     size_t offset = setvars(args);
+
+    if ( args[offset] == NULL )
+      continue;
 
     int pid;
     if ( (pid = fork()) > 0 ) {

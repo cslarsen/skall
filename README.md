@@ -14,7 +14,7 @@ Not much yet, but:
 * Readline support with history and simple globbing
 * Catches a few signals
 * Get and set shell variables
-* Get environment variables
+* Get and set environment variables
 
 Glaringly missing features
 --------------------------
@@ -25,7 +25,6 @@ Glaringly missing features
 * Globbing
 * tab-completion
 * Job control
-* Exporting shell variables to environment
 * String quoting
 * ... and much more
 
