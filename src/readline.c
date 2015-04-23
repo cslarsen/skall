@@ -19,7 +19,7 @@ void init_readline()
 
 char* readprompt(FILE* f, const char* promptfmt)
 {
-  return trim(readline(getprompt(promptfmt)));
+  return readline(getprompt(promptfmt));
 }
 
 #else

@@ -122,11 +122,12 @@ int main(int argc, char** argv)
 {
   initialize(argc, argv);
 
-  char *input = strdup(argv[0]);
+  char *raw_input = strdup(argv[0]);
 
   for (;;) {
-    free(input);
-    input = readprompt(stdin, NULL);
+    free(raw_input);
+    raw_input = readprompt(stdin, NULL);
+    char *input = trim(raw_input);
 
     if ( feof(stdin) || !input ) {
       fprintf(stderr, "\n");
