@@ -15,6 +15,7 @@ AC_CHECK_LIB([readline], [readline])
 
 # Checks for header files.
 AC_CHECK_HEADERS([inttypes.h stddef.h stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([sys/param.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T
