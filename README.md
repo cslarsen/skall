@@ -41,7 +41,7 @@ You need autotools, sorun
 
 If you don't have autotools, you may be able to do
 
-    $ gcc -o skall -Iinclude src/*.c
+    $ gcc -std=C99 -o skall -Iinclude src/*.c
 
 Example session
 ---------------

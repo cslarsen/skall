@@ -1,5 +1,11 @@
-./configure
-make -j
-./skall
+You need autotools to build this from the source repository:
 
-and then make install
+    $ ./autogen.sh
+    $ ./configure
+    $ make -j
+    $ src/skall
+
+After that, if you dare, you can do
+
+    $ make -j install
+
